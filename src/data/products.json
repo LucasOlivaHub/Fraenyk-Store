@@ -1,0 +1,113 @@
+[
+    {
+        "id": 1,
+        "nombre": "Electronico campera",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 1200,
+        "descuento": "15",
+        "imagen": "http://dummyimage.com/206x100.png/ff5733",
+        "categoria": "Electrónica",
+        "color": ["Rojo"],
+        "coloresCss": ["red"],
+        "talles": ["S", "M", "L"]
+    },
+    {
+        "id": 2,
+        "nombre": "Electronico 2",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 8000,
+        "imagen": "http://dummyimage.com/206x100.png/007bff",
+        "categoria": "Electrónica",
+        "color": ["Azul", "Blanco"],
+        "coloresCss": ["blue", "#fff"],
+        "talles": ["M", "L"]
+    },
+    {
+        "id": 3,
+        "nombre": "Gaming 1",
+        "descripcion": "Esto es una remera. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 3500,
+        "imagen": "http://dummyimage.com/206x100.png/28a745",
+        "categoria": "Gaming",
+        "color": ["Verde"],
+        "coloresCss": ["green"],
+        "talles": ["S", "L"]
+    },
+    {
+        "id": 4,
+        "nombre": "Electrodomestico 1",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 14500,
+        "imagen": "http://dummyimage.com/206x100.png/fefefe",
+        "categoria": "Electrodomésticos",
+        "color": ["Blanco", "Plateado"],
+        "coloresCss": ["#fff", "efefee"],
+        "talles": ["M"]
+    },
+    {
+        "id": 5,
+        "nombre": "Gaming 2",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 2200,
+        "imagen": "http://dummyimage.com/206x100.png/ffdc00",
+        "categoria": "Gaming",
+        "color": ["Amarillo", "Rojo"],
+        "coloresCss": ["yellow", "red"],
+        "talles": ["S", "M"]
+    },
+    {
+        "id": 6,
+        "nombre": "Electronico 3",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 9800,
+        "imagen": "http://dummyimage.com/206x100.png/000000",
+        "categoria": "Electrónica",
+        "color": ["Negro"],
+        "coloresCss": ["#000"],
+        "talles": ["M", "L"]
+    },
+    {
+        "id": 7,
+        "nombre": "Celular 1",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 6400,
+        "imagen": "http://dummyimage.com/206x100.png/6c757d",
+        "categoria": "Celulares",
+        "color": ["Gris", "Negro"],
+        "coloresCss": ["#efefef", "#000"],
+        "talles": ["S", "L"]
+    },
+    {
+        "id": 8,
+        "nombre": "Celular 2",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 5200,
+        "imagen": ["http://dummyimage.com/206x100.png/8a6d3b", "http://dummyimage.com/206x100.png/888aeb"],
+        "categoria": "Celulares",
+        "color": ["Marrón"],
+        "coloresCss": ["brown"],
+        "talles": ["S", "M"]
+    },
+    {
+        "id": 9,
+        "nombre": "Electrodomestico 2",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 11000,
+        "imagen": "http://dummyimage.com/206x100.png/a7a9c0",
+        "categoria": "Electrodomésticos",
+        "color": ["Plateado"],
+        "coloresCss": ["#efefee"],
+        "talles": ["L"]
+    },
+    {
+        "id": 10,
+        "nombre": "Celular 3",
+        "descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "precio": 3900,
+        "imagen": "http://dummyimage.com/206x100.png/800080",
+        "categoria": "Celulares",
+        "color": ["Morado", "Rosa"],
+        "coloresCss": ["violet", "pink"],
+        "talles": ["M", "L"]
+    }
+]
