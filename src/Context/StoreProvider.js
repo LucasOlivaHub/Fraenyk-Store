@@ -5,11 +5,13 @@ import { storeContext } from '../Context/StoreContext'
 export const StoreProvider = ({children}) => {
   const [prods, setProds] = useState(data);
   const [filterProds, setFilterProds] = useState(data);
-  const [categoryProds, setCategoryProds] = useState([])
-  const [userInfo, setUserInfo] = useState([])
+  const [categoryProds, setCategoryProds] = useState([]);
+  const [userInfo, setUserInfo] = useState([]);
   const [cartProds, setCartProds] = useState([]);
   const [nuevoProdCart, setNuevoProdCart] = useState(false);
-  const [idCompra, setIdCompra] = useState("")
+  const [idCompra, setIdCompra] = useState("");
+  //Historial al momento de entrar a la página
+  const [currentHistory, setCurrentHistory] = useState(window.history.length);
 
   function getCartProductsCount() {
     let contador = 0;
@@ -19,6 +21,7 @@ export const StoreProvider = ({children}) => {
     })
     return contador;
   }
+
 
   
   return (
@@ -36,7 +39,8 @@ export const StoreProvider = ({children}) => {
       idCompra,
       setIdCompra,
       userInfo,
-      setUserInfo}}>
+      setUserInfo,
+      currentHistory}}>
         {children}
     </storeContext.Provider>
   )

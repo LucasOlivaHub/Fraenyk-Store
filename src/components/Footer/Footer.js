@@ -4,8 +4,8 @@ export const Footer = () => {
   return (
     <footer>
         <div>
-            <span>Lucas Hernán Oliva</span>
-            <span>Tienda con React</span>
+            <span>Copyright 2023 © - Lucas Hernán Oliva</span>
+            <span>Tienda online con React</span>
         </div>
     </footer>
   )

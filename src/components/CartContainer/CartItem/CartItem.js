@@ -7,6 +7,9 @@ export const CartItem = ({prod}) => {
   const [price, setPrice] = useState(prod.precio * prod.cantidad);
   const {cartProds, setCartProds ,nuevoProdCart, setNuevoProdCart} = useContext(storeContext);
 
+  const productImages = require.context('../../../assets/productos', true);
+
+
   useEffect(() => {
     setCount(prod.cantidad);
     setNuevoProdCart(!nuevoProdCart)
@@ -47,7 +50,7 @@ export const CartItem = ({prod}) => {
     <article className='p-carrito'>
                   <div className='p-nombreimg-container'>
                       <h2 className='p-nombre'>{prod.nombre}</h2>
-                      <img src={prod.imagen}></img>
+                      <img src={productImages(`./${Array.isArray(prod.imagen) ? prod.imagen[0] : prod.imagen}`)}></img>
                   </div>
                     <ModalDelete handleDelete={handleDelete}/>
                     <div className='p-detalles'>

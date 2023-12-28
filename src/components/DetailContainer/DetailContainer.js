@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { pedirProductoPorId } from '../../helpers/pedirDatos'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { storeContext } from '../../Context/StoreContext';
-import { removeAccents } from '../../helpers/utilidades';
+import { ItemsList } from '../IndexContainer/ItemsList/ItemsList';
+import { Item } from '../IndexContainer/Item/Item';
 
 export const DetailContainer = () => {
     const [producto, setProducto] = useState();
@@ -15,8 +16,16 @@ export const DetailContainer = () => {
     const errorCantidadMsg = document.querySelector(".cantidad-detalles-container .error-msg");
     const btnAñadirCart = document.querySelector(".comprar-btn");
 
-    const {cartProds, setCartProds} = useContext(storeContext);
+    const {prods, cartProds, setCartProds} = useContext(storeContext);
+    const prodsCopia = [...prods]
 
+    //Setear el contexto a la carpeta assets para buscar imagenes desde ahí
+    const productImages = require.context('../../assets/productos', true);
+    /* Luego, tanto en setImagenMostrada como en los src={} de las imagenes hay que buscar la imagen
+    desde "productImages(`./${}`)"
+    Si quiero cambiar esto, simplemente borro "productImages()" del src o del setImagenMostrada e
+    ingreso la nueva ruta*/
+    
     useEffect(() => {
         window.scrollTo(0, 0);
 
@@ -24,17 +33,18 @@ export const DetailContainer = () => {
         .then(prod => {
             setProducto(prod);
         })
+
         if(producto) {
            setColor(producto.coloresCss[0]);
            setTalle(producto.talles[0]);
-           setImagenMostrada(Array.isArray(producto.imagen) ? producto.imagen[0] : producto.imagen);
+           setImagenMostrada(productImages(`./${Array.isArray(producto.imagen) ? producto.imagen[0] : producto.imagen}`));
 
             const sizeBoxes = document.querySelectorAll(".p-talle-box");
             const colorBoxes = document.querySelectorAll(".p-color-box");  
             colorBoxes[0].classList.add("selected")
             sizeBoxes[0].classList.add("selected")
         }
-    }, [producto])
+    }, [producto, id])
 
     const navigate = useNavigate()
     const handleGoBack = () => {
@@ -68,7 +78,6 @@ export const DetailContainer = () => {
         } );
         setTalle(selectedSize);
     }
-
 
     function handleAdd() {
         if(cantidadProd >= 1 && cantidadProd <= 30) {
@@ -155,7 +164,7 @@ export const DetailContainer = () => {
                 <img src={imagenMostrada} className='detalles-img' alt='producto'/>
                 <div className='detalles-moreimgs-container'>
                   {Array.isArray(producto.imagen) && producto.imagen.map(i => {
-                    return <img key={i} src={i} className='detalles-moreimgs' onClick={() => setImagenMostrada(i)}></img>
+                    return <img key={i} src={productImages(`./${i}`)} className='detalles-moreimgs' onClick={() => setImagenMostrada(productImages(`./${i}`))}></img>
                   })}
                 </div>
             </div>
@@ -196,10 +205,40 @@ export const DetailContainer = () => {
 
                     </div>
                     <button onClick={handleAdd} className='comprar-btn'>Añadir al carrito</button>
+
+                    {cartProds.length > 0 && 
+                        <button onClick={e => {
+                            e.preventDefault()
+                            navigate("/carrito")
+                            }} className='vercarrito-btn'>Ver mi carrito <i className="bi bi-cart4"></i>
+                        </button>
+                    }
                 </div>
-       
         </article>
         )}
+
+        
+        {producto && 
+        <div className='details-masprods-container'>
+            <br/>
+            <p><b>Productos relacionados</b></p>
+            <div className='masprods-container'>
+                {prodsCopia.map(p => ((p.categoria === producto.categoria) && (p.id !== producto.id)) 
+                    &&
+                    <Link to={`/product/${p.id}/${p.nombre}`} key={p.id} onClick={() => setProducto(p)} className='producto-link'>
+                        <article className='producto'>
+                            <img src={productImages(`./${Array.isArray(p.imagen) ? p.imagen[0] : p.imagen}`)} className='producto-img'/>
+                            <div className='producto-texto-imagen'>
+                                    <h2 className='producto-nombre'>{p.nombre}</h2>
+                                    <b className='producto-precio'>$ {p.precio}</b>
+                            </div>
+                        </article>
+                    </Link>
+                    )}
+            </div>
+        </div>
+       }
+
     </div>
   )
 }

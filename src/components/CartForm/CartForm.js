@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import mercadopago from '../../assets/mercadopago.png'
-import paypal from '../../assets/paypal.png'
 import tarjeta from '../../assets/credit-card.png'
 import {v4 as uuid} from 'uuid'
 import { validarEmail, validarLetras, validarNumeros } from '../../helpers/utilidades'
 import { storeContext } from '../../Context/StoreContext'
+import CartModal from './CartModal'
+
 
 
 
@@ -18,8 +19,12 @@ export const CartForm = () => {
     const [pago, setPago] = useState("");
 
     const navigate = useNavigate();
-    const {idCompra, setIdCompra, cartProds, userInfo, setUserInfo} = useContext(storeContext);
+    const {idCompra, setIdCompra, cartProds, setCartProds, userInfo, setUserInfo} = useContext(storeContext);
     const [numeroId, setNumeroId] = useState(uuid());
+
+    const [show, setShow] = useState(false);
+    const [datosInvalidos, setDatosInvalidos] = useState([]);
+
 
     useEffect(() => {
        setIdCompra(numeroId);
@@ -27,84 +32,29 @@ export const CartForm = () => {
 
     useEffect(() => {
         if(userInfo.length > 0) {
-            sendResumeEmails()
+            navigate(`/comprafinalizada/${idCompra}`)
         }
      }, [userInfo])
          
 
-    function sendResumeEmails() {
-
-            console.log(userInfo)
-            navigate(`/comprafinalizada/${idCompra}`)
-
-          /*  FALTA CODIGO PARA ENVIAR MAIL
-          
-            resend.emails.send({
-                from: 'lucasolivah@gmail.com',
-                to: 'lucasolivah@gmail.com',
-                subject: 'Compra realizada',
-                html: `<div>
-                <p>Se ha realizado una compra de <strong>${userInfo[0].nombre}</strong>!</p>
-                <br/>
-                <br/>
-                <p>Email: ${userInfo[0].email}</p><br/>
-                <p>Dirección: ${userInfo[0].direccion}</p><br/>
-                <p>Código postal: ${userInfo[0].codigoPostal}</p><br/>
-                <p>Teléfono: ${userInfo[0].telefono}</p><br/>
-                <p>Pago: ${userInfo[0].tipoPago}</p><br/><br/>
-                <p>ID COMPRA: <b>${userInfo[0].numeroCompra}</b></p><br/>
-
-
-                <p>Productos comprados:</p> ${userInfo[0].productos && userInfo[0].productos.map(p => {
-                    return <div>
-                     <h2>{p.nombre}</h2>
-                     <p>{p.cantidad}</p>
-                     <p>Total: {p.precio * p.cantidad}</p>
-                     </div>
-                 })}
-                    </div>
-                `
-              });
-    
-              resend.emails.send({
-                from: 'lucasolivah@gmail.com',
-                to: userInfo[0].email,
-                subject: 'Hello World',
-                html: `<div>
-                <h2><b>IMPORTANTE:</b> el siguiente mail es un simulador de compra, no tiene validez
-                ya que el fin es previsualizar el mismo</h2>
-                <br/>
-                <br/>
-                <p>${userInfo[0].nombre}</p>
-                <p>Has realizado una simulación de compra de:</p> 
-                ${userInfo[0].productos && userInfo[0].productos.map(p => {
-                   return <div>
-                    <h2>{p.nombre}</h2>
-                    <p>{p.cantidad}</p>
-                    <p>Total: {p.precio * p.cantidad}</p>
-                    </div>
-                })}
-
-                <p>Te recordamos que tu número de compra es: <b>${userInfo[0].numeroCompra}</b></p>
-                </br>
-                </br>
-                <p>No lo pierdas ni compartas, ya que con este número sabremos qué compra realizaste :)</p>
-                </br> 
-                </br>
-                <p>En breve te contactaremos para coordinar el envio</p>
-                <h3>¡Muchas gracias por elegirnos!</h3>
-                </div>`
-              });
-        */
-                    
-        
-    }
-
     function handleSubmit(e) {
+        setDatosInvalidos([])
         e.preventDefault();
         //Validaciones
-        if (nombre !== (false || "") && email !== (false || "") && codPostal !== (false || "") && 
-            telefono !== (false || "") && direccion !== (false || "") && pago !== (false || "")) {
+        if (nombre !== false
+        && email !== false 
+        && codPostal !== false 
+        && telefono !== false
+        && direccion !== false 
+        && pago !== false 
+
+        && nombre !== ""
+        && email !== "" 
+        && codPostal !== "" 
+        && telefono !== ""
+        && direccion !== "" 
+        && pago !== ""   
+        ) {
             //Confirmar compra
                 //Id de compra 
                 if(idCompra) {
@@ -117,11 +67,35 @@ export const CartForm = () => {
                         tipoPago: pago,
                         productos: [...cartProds],
                         id: idCompra
-                    }])    
+                    }])   
                 }
         } else {
             window.scrollTo(0,0)
-            alert("Verifica tus datos")
+           // alert("Información incompleta o erronea. Verifica tus datos")
+            //Validaciones
+            setShow(true)
+            if(!nombre || nombre === ""){
+                setDatosInvalidos(prevState => [...prevState, "Nombre"]);
+            } 
+
+            if(!email || email === ""){
+                setDatosInvalidos(prevState => [...prevState, "Email"]);
+            } 
+            
+            if(!direccion || direccion === ""){
+                setDatosInvalidos(prevState => [...prevState, "Dirección de domicilio"]);
+            }
+            
+            if(!codPostal || codPostal === ""){
+                setDatosInvalidos(prevState => [...prevState, "Código postal"]);
+            }
+            if(!telefono || telefono === ""){
+                setDatosInvalidos(prevState => [...prevState, "Teléfono de contacto"]);
+            }
+            if(!pago || pago === ""){
+                setDatosInvalidos(prevState => [...prevState, "Método de pago"]);
+            }
+
         }
     }
 
@@ -161,15 +135,15 @@ export const CartForm = () => {
                     <span className={`direccion-error error-msg ${direccion.length === 0 || direccion !== false ? "disabled" : ""}`}>Dirección inválida</span>
                 </label>
 
-                <label>Codigo postal: <b className='label-required'>*</b>
-                    <input type='text' maxLength={5} 
+                <label className='codpostal-label'>Codigo postal: <b className='label-required'>*</b>
+                    <input type='text' maxLength={5} id='codpostal'
                     onBlur={() => {(codPostal.length > 0 && !validarNumeros(codPostal)) && setCodPostal(false)}}
                     onChange={(e) => setCodPostal(e.target.value)} placeholder='Ingrese su código postal'></input>
                     <span className={`codpostal-error error-msg ${codPostal.length === 0 || codPostal !== false ? "disabled" : ""}`}>Código postal inválido</span>
                 </label>
 
                 <label className='contact-label'>Teléfono de contacto <br/><b className='label-required'>*</b>
-                    <div><b>+54 </b><input type='text' 
+                    <div><b>+54 </b><input type='tel' 
                     onBlur={() => (telefono.length > 0 && !validarNumeros(telefono.replace(/\s/g, ''))) && setTelefono(false)}
                     onChange={(e) => setTelefono(e.target.value)} required placeholder='Ingrese su número'></input></div>
                     <span className={`telefono-error error-msg ${telefono.length === 0 || telefono !== false ? "disabled" : ""}`}>Teléfono inválido</span>
@@ -179,7 +153,6 @@ export const CartForm = () => {
                     Seleccione el método de pago: <b className='label-required'>*</b>
                     <input id='tarjeta-input' type='radio' value="tarjeta" name='paymentmethod' onInput={(e) => setPago(e.currentTarget.value)}/>
                     <input id='mercadopago-input' type='radio' value="mercadopago" name='paymentmethod' onInput={(e) => setPago(e.currentTarget.value)}/>
-                    <input id="paypal-input" type='radio' value="paypal" name='paymentmethod' onInput={(e) => setPago(e.currentTarget.value)}/>
                     
                     <label className="tarjeta-label" htmlFor="tarjeta-input">
                         <img src={tarjeta}/> {pago === "tarjeta" && <span>Seleccionado (deshabilitado por el momento)</span>}
@@ -188,20 +161,19 @@ export const CartForm = () => {
                     <label className="mercadopago-label" htmlFor="mercadopago-input">
                         <img src={mercadopago}/> {pago === "mercadopago" && <span>Seleccionado (deshabilitado por el momento)</span>}
                     </label>
-
-                    <label className="paypal-label" htmlFor="paypal-input">
-                        <img src={paypal}/> {pago === "paypal" && <span>Seleccionado (deshabilitado por el momento)</span>}
-                    </label>
                 </label>
             </div>
 
             <div className='cartform-btns-container'>
                 <Link className='cancelar-btnform' to={"/carrito"}>Cancelar y volver</Link>
 
-                <a href='#' className="confirmar-btnform" onClick={(e) => handleSubmit(e)}>Confirmar compra</a>
+                <a href='#' className={nombre && direccion && telefono && codPostal && email && pago ?"confirmar-btnform" : "confirmarincompleto-btnform"} onClick={(e) => handleSubmit(e)}>
+                  {nombre && direccion && telefono && codPostal && email && pago ? "Confirmar compra" : "Completa tus datos"}  
+                </a>
             </div>
-         
+            
         </form>
+        {show && <CartModal datosInvalidos={datosInvalidos} show={show} setShow={setShow} />}
     </div>
   )
 }
